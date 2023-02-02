@@ -32,7 +32,7 @@ Create Apex trigger(s) on the opportunity object that completes the project requ
 ## Resources
 - [Trailhead - Apex Triggers](https://trailhead.salesforce.com/content/learn/modules/apex_triggers)
 - [Apex Recipies - Trigger Examples](https://github.com/trailheadapps/apex-recipes/tree/main/force-app/main/default/triggers)
-- [SFBen- Trigger Framework](https://www.salesforceben.com/the-salesforce-trigger-handler-framework/)
+- [SFBen - Trigger Framework](https://www.salesforceben.com/the-salesforce-trigger-handler-framework/)
 - [Trailhead - Set Up Visual Studio Code](https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/set-up-visual-studio-code)
 - [Setup GitHub Repo and SFDX Project](https://youtu.be/SHGf_9NN4Sg)
 
