@@ -24,7 +24,7 @@ Create Apex trigger(s) on the opportunity object that completes the project requ
 
 ## Development Requirements
 - Must have completed and sent a review of Apex Fundamentals
-- Must use SFDX, git, GitHub, and Visual Studio Code **NO DEVELOPER CONSOLE!**
+- Must use SFDX, git, GitHub, and Visual Studio Code **NO DEVELOPER CONSOLE!** Only for logs....
 - Your code should be able to run in any playground org via a GitHub repo
 - Must be able to commit to meeting weekly with a large group
 - Do not use configuration automation or middleware to do integration
