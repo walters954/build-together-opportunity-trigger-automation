@@ -1,11 +1,22 @@
-trigger OpportunityTrigger on Opportunity (before insert, before update) {
+trigger OpportunityTrigger on Opportunity ( before insert,before update) {
     //OpportunityTriggerHandler.checkForStage(Trigger.new);
     for(Opportunity opp : trigger.new){
-        if((opp.StageName != 'Prospecting' || opp.StageName != 'Closed Lost') && !opp.HasOpportunityLineItem){
+If (trigger.isInsert) {
+
+    if(opp.StageName != 'Prospecting'){
+        opp.StageName.addError('Newly created Opportunities have to be in "Prospecting".');
+
+    }
+}
+    If (trigger.isUpdate) {
+        if(opp.StageName != 'Prospecting' && opp.StageName != 'Closed Lost' && !opp.HasOpportunityLineItem){
             opp.StageName.addError('Please connect a product to save this record.');
         }
     }
+    }
 }
+
+
 
 
 /*Okay so what I would like to do is split the trigger its functions into a separate class to keep our trigger "logic-less" as a best practice
