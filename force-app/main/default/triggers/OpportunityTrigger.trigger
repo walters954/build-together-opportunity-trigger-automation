@@ -1,5 +1,10 @@
 trigger OpportunityTrigger on Opportunity (before insert, before update) {
-
+    //OpportunityTriggerHandler.checkForStage(Trigger.new);
+    for(Opportunity opp : trigger.new){
+        if((opp.StageName != 'Prospecting' || opp.StageName != 'Closed Lost') && !opp.HasOpportunityLineItem){
+            opp.StageName.addError('Please connect a product to save this record.');
+        }
+    }
 }
 
 
