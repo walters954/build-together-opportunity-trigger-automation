@@ -1,11 +1,13 @@
-trigger OpportunityTrigger on Opportunity ( before insert,before update) {
-    //Checks the trigger context.
-    if(trigger.isInsert && trigger.isBefore) {
-        //Calls the correct method based on context. 
-        OpportunityTriggerHandler.isBeforeInsert(trigger.new);
-    //Checks the trigger context.
-    }else if(trigger.isUpdate && trigger.isBefore){
-        //Calls the correct method based on context. 
-        OpportunityTriggerHandler.isBeforeUpdate(trigger.new);
+trigger OpportunityTrigger on Opportunity ( before insert,before update, after update) {
+    if(trigger.isBefore){
+        if(trigger.isInsert){
+            OpportunityTriggerHandler.isBeforeInsert(trigger.new);
+        }else if(trigger.isUpdate){
+            OpportunityTriggerHandler.isBeforeUpdate(trigger.new);
+        }
+    }else if(trigger.isAfter){
+        if(trigger.isUpdate){
+
+        }
     }
 }

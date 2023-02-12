@@ -17,6 +17,8 @@ public with sharing class OpportunityTriggerHandler {
             if(opp.StageName != 'Prospecting' && opp.StageName != 'Closed Lost' && !opp.HasOpportunityLineItem){
                 //Display error for updating a record not in prospecting or closed won without a opportunity line item
                 opp.StageName.addError('Please connect a product to save this record.');
+            }else if(opp.StageName == 'Closed Won' && opp.HasOpportunityLineItem){
+                Opportunity newOpp = opp.clone(false, false, false, false);
             }
         }
     }
