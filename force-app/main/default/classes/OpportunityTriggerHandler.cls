@@ -13,13 +13,27 @@ public with sharing class OpportunityTriggerHandler {
     //Not passing in Trigger.oldMap and Trigger.newMap as we are not needing to check the previous context of an exact record. 
     public static void isBeforeUpdate(List<Opportunity> triggerDotNew){
         //Loop through the list of records.
+
+        List<Opportunity> renewalOpp = new List<Opportunity> ();
         for(Opportunity opp : triggerDotNew){
             if(opp.StageName != 'Prospecting' && opp.StageName != 'Closed Lost' && !opp.HasOpportunityLineItem){
                 //Display error for updating a record not in prospecting or closed won without a opportunity line item
                 opp.StageName.addError('Please connect a product to save this record.');
             }else if(opp.StageName == 'Closed Won' && opp.HasOpportunityLineItem){
                 Opportunity newOpp = opp.clone(false, false, false, false);
+                newOpp.CloseDate = opp.CloseDate.addYears(1);
+                newOpp.StageName = 'Value Proposition';
+                newOpp.related_opportunity__r = opp;
+                renewalOpp.add(newOpp);
             }
+
         }
+        if (renewalOpp.size()>0) {
+
+            insert renewalOpp;
+
+        }
+
+
     }
 }
