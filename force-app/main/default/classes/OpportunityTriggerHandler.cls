@@ -41,7 +41,7 @@ public with sharing class OpportunityTriggerHandler {
         if (!renewalOpp.isEmpty()) {
 
             insert renewalOpp;
-            //This section currently breaks it
+            /*This section currently breaks it
             List<OpportunityLineItem> oppLineItems = [SELECT Id, OpportunityId FROM OpportunityLineItem WHERE OpportunityId IN :triggerDotNew];
             for (OpportunityLineItem oppLineItem : oppLineItems) {
                 Opportunity clonedOpp = clonedOppsMap.get(oppLineItem.OpportunityId);
@@ -51,7 +51,7 @@ public with sharing class OpportunityTriggerHandler {
                     renewalLineItems.add(newLineItem);
                 }
             }
-            insert renewalLineItems;
+            insert renewalLineItems;*/
         }
     }
 }
