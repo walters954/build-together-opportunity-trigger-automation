@@ -41,8 +41,9 @@ public with sharing class OpportunityTriggerHandler {
         if (!renewalOpp.isEmpty()) {
 
             insert renewalOpp;
-            /*This section currently breaks it
-            List<OpportunityLineItem> oppLineItems = [SELECT Id, OpportunityId FROM OpportunityLineItem WHERE OpportunityId IN :triggerDotNew];
+
+            // Query for the newly created OpportunityLineItems after the Opportunity records have been inserted
+            List<OpportunityLineItem> oppLineItems = [SELECT Id, OpportunityId, Product2Id, Quantity, ProductCode, ListPrice, UnitPrice FROM OpportunityLineItem WHERE OpportunityId IN :clonedOppsMap.keyset()];
             for (OpportunityLineItem oppLineItem : oppLineItems) {
                 Opportunity clonedOpp = clonedOppsMap.get(oppLineItem.OpportunityId);
                 if (clonedOpp != null) {
@@ -51,7 +52,7 @@ public with sharing class OpportunityTriggerHandler {
                     renewalLineItems.add(newLineItem);
                 }
             }
-            insert renewalLineItems;*/
-        }
+        insert renewalLineItems;
     }
+}
 }
