@@ -16,7 +16,7 @@ public with sharing class OpportunityTriggerHandler {
     }
 
     //Method to create renewal opportunities
-    public static void createRenewalOpps(List<Opportunity> opportunitiesR){  
+    public static void createRenewalOpps(List<Opportunity> newOpps){  
         //Create a list to store the new renewal opportunities
         List<Opportunity> renewalOpps = new List<Opportunity>();  
         //Create a variable to store the query result
@@ -27,7 +27,7 @@ public with sharing class OpportunityTriggerHandler {
                 (SELECT Id, Quantity, TotalPrice, Product2Id
                 FROM OpportunityLineItems) 
                 FROM Opportunity 
-                WHERE Id IN :opportunitiesR AND IsWon = true]);
+                WHERE Id IN : newOpps AND IsWon = true]);
             //Loop through each Opportunity record in the query result
             for (Opportunity opp : opportunitiesMap.values()) {
                 //Create a new Renewal Opportunity record and add it to the list
@@ -43,6 +43,37 @@ public with sharing class OpportunityTriggerHandler {
         //If there are renewal opportunities, insert them into the database
         if (!renewalOpps.isEmpty()) {
             insert renewalOpps;
+        }
+    }
+}
+
+    public static void setOpportunityAmount(List<Opportunity> newOpportunities) {
+        // Collect the account IDs for the new opportunities
+        Set<Id> accountIds = new Set<Id>();
+        for (Opportunity opp : newOpportunities) {
+            accountIds.add(opp.AccountId);
+        }
+        
+        // Query for open opportunities related to the same accounts
+        List<Opportunity> openOpps = [SELECT Id, Account.AnnualRevenue
+                                     FROM Opportunity
+                                     WHERE AccountId IN :accountIds AND StageName != 'Closed Won' AND Id != :newOpportunities[0].Id];
+        
+        // Set the opportunity amount to 20% of the account's annual revenue
+        for (Opportunity opp : newOpportunities) {
+            if (openOpps.isEmpty()) {
+                opp.Amount = opp.Account.AnnualRevenue * 0.2;
+            }
+        }
+        
+        // Send communication to another user for review
+        if (!newOpportunities.isEmpty() && openOpps.isEmpty()) {
+            // replace USER_EMAIL with the email address of the user who should receive the communication
+            Messaging.SingleEmailMessage email = new Messaging.SingleEmailMessage();
+            email.setToAddresses(new List<String>{'USER_EMAIL'});
+            email.setSubject('New opportunity created with 20% of annual revenue');
+            email.setPlainTextBody('A new opportunity was created with 20% of the account\'s annual revenue. Please review.');
+            Messaging.sendEmail(new List<Messaging.SingleEmailMessage>{email});
         }
     }
 }
