@@ -57,7 +57,7 @@ public with sharing class OpportunityTriggerHandler {
         // Query for open opportunities related to the same accounts
         List<Opportunity> openOpps = [SELECT Id, Account.AnnualRevenue
                                      FROM Opportunity
-                                     WHERE AccountId IN :accountIds AND StageName != 'Closed Won' AND Id != :newOpportunities[0].Id];
+                                     WHERE AccountId IN :accountIds AND StageName != 'Closed Won' AND Id in :newOpportunities];
         
         // Set the opportunity amount to 20% of the account's annual revenue
         for (Opportunity opp : newOpportunities) {
