@@ -45,7 +45,7 @@ public with sharing class OpportunityTriggerHandler {
             insert renewalOpps;
         }
     }
-}
+
 
     public static void setOpportunityAmount(List<Opportunity> newOpportunities) {
         // Collect the account IDs for the new opportunities
